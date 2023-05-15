@@ -1,14 +1,17 @@
 package com.dylc.DYLC.controller;
 
+import com.dylc.DYLC.service.TodoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/todo")
 public class TodoController {
+    private final TodoService todoService;
     @GetMapping("")
     public String todoList() {
         return "/todo/main";
@@ -20,7 +23,10 @@ public class TodoController {
     }
     @PostMapping("/create")
     public String todo(@RequestParam String todoContents) {
-        System.out.println("todoContents: "+ todoContents);
-        return "redirect:/todo/create";
+//        System.out.println("todoContents: "+ todoContents);
+        todoService
+        return "redirect:/todo";
     }
+
+
 }
