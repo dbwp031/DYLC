@@ -23,7 +23,7 @@ public class TodoController {
     private final TodoService todoService;
     @GetMapping("/list")
     public String list(Model model){
-        List<Todo> todoList = this.todoService.getList();
+        List<Todo> todoList = this.todoService.getList();                                                                                                                    
         model.addAttribute("todoList", todoList);
         return "/todo/list";
     }
@@ -46,9 +46,8 @@ public class TodoController {
     public String todoListUpdate(@RequestParam(value="todos",required = false) Long[] todos
                                  ){
         if (todos != null) {
+            List<Long> idList = todoService.getIdList();
             for (Long todoId: todos){
-                System.out.println("todoID!!!!");
-                System.out.println(todoId);
                 if(!this.todoService.getTodoById(todoId).isDone()){
                     Todo targetTodo = this.todoService.getTodoById(todoId);
                     System.out.println("{} is Done"+todoId);
@@ -59,6 +58,17 @@ public class TodoController {
                     tempTodo.setCreateDate(targetTodo.getCreateDate());
                     this.todoService.updateTodoById(todoId, tempTodo);
                 }
+                idList.remove(todoId);
+            }
+            for(Long todoId : idList) {
+                Todo targetTodo = this.todoService.getTodoById(todoId);
+                System.out.println("{} is Done"+todoId);
+                Todo tempTodo = new Todo();
+                tempTodo.setId(targetTodo.getId());
+                tempTodo.setContent(targetTodo.getContent());
+                tempTodo.setDone(false);
+                tempTodo.setCreateDate(targetTodo.getCreateDate());
+                this.todoService.updateTodoById(todoId, tempTodo);
             }
         }
         return "redirect:/todo/list";

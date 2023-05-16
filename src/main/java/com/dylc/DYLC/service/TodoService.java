@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,7 +18,13 @@ public class TodoService {
     public List<Todo> getList() {
         return this.todoRepository.findAll();
     }
+    public List<Long> getIdList(){
+        List<Long> idList = new ArrayList<>();
+        List<Todo> todoList = getList();
+        todoList.forEach(todo -> idList.add(todo.getId()));
 
+        return idList;
+    }
     public Todo getTodoById(final Long id) {
         return todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
     }
