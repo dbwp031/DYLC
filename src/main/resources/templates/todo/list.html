@@ -5,6 +5,46 @@
     <title>Title</title>
 </head>
 <body>
+<!--<table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>내용</th>-->
+<!--        <th>완료</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="todo: ${todoList}">-->
+<!--        <td th:text="${todo.content}">todo.context</td>-->
+<!--        <td th:text="${todo.done}">todo.done</td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+<form action="/todo/check-done" method="POST">
+<table>
+    <tr>
+        <td>Todo List</td>
+        <td>
+        <p>
+        <th block th:each="todo: ${todoList}">
+            <input type="checkbox" name="todos" th:value="${todo.id}" th:checked="${todo.isDone()}"/>
+            <label th:text="${todo.content}"></label>
+        </th>
+        </p>
+        </td>
+    </tr>
+    <tr>
+            <input type="submit" value="checkbox 업데이트">
+    </tr>
+</table>
 
+</form>
+<!--<form action="/todo/check-done" method="POST">-->
+<!--    content <br>-->
+<!--    <tr th:each="todo : ${todoList}">-->
+<!--        <input type="checkbox" th:name="${todo.id}_checked"th:text="${todo.content}" th:checked="${todo.isDone()}"><br>-->
+<!--    </tr>-->
+<!--    <input type="submit" value="checkbox 업데이트">-->
+<!--</form>-->
+<a th:href="@{/todo/create}" class="btn btn-primary">질문 등록하기</a>
 </body>
 </html>

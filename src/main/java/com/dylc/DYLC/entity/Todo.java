@@ -1,17 +1,21 @@
 package com.dylc.DYLC.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
-
+@Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length=50)
+    @Column(name="content", nullable=false, length=50)
     private String content;
+    @Column(name="done", nullable=false)
+    private boolean done;
+    @Column(name="createDate", nullable = false )
     private LocalDateTime createDate;
+
 }
