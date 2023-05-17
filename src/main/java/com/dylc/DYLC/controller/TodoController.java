@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -35,44 +36,27 @@ public class TodoController {
     @PostMapping("/create")
     public String todoCreate(@Valid TodoForm todoForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
-            return "/todo/create";
+            return "redirect:/todo/create";
         }
         this.todoService.create(todoForm.getContent());
         System.out.println("create!!!");
+        return "/todo/list";
+    }
+
+    @GetMapping("/check-done")
+    public String todoListUpdate(@RequestParam(value="todos",required = false) Long[] todos){
+        System.out.println("check-done!!!!");
+        List<Long> doneTodoIds = new ArrayList<>();
+
+        if (todos != null) {
+            for (Long e : todos) {
+                doneTodoIds.add(e);
+            }
+        }
+        this.todoService.updateDoneAll(doneTodoIds);
         return "redirect:/todo/list";
     }
 
-    @PostMapping("/check-done")
-    public String todoListUpdate(@RequestParam(value="todos",required = false) Long[] todos
-                                 ){
-        if (todos != null) {
-            List<Long> idList = todoService.getIdList();
-            for (Long todoId: todos){
-                if(!this.todoService.getTodoById(todoId).isDone()){
-                    Todo targetTodo = this.todoService.getTodoById(todoId);
-                    System.out.println("{} is Done"+todoId);
-                    Todo tempTodo = new Todo();
-                    tempTodo.setId(targetTodo.getId());
-                    tempTodo.setContent(targetTodo.getContent());
-                    tempTodo.setDone(true);
-                    tempTodo.setCreateDate(targetTodo.getCreateDate());
-                    this.todoService.updateTodoById(todoId, tempTodo);
-                }
-                idList.remove(todoId);
-            }
-            for(Long todoId : idList) {
-                Todo targetTodo = this.todoService.getTodoById(todoId);
-                System.out.println("{} is Done"+todoId);
-                Todo tempTodo = new Todo();
-                tempTodo.setId(targetTodo.getId());
-                tempTodo.setContent(targetTodo.getContent());
-                tempTodo.setDone(false);
-                tempTodo.setCreateDate(targetTodo.getCreateDate());
-                this.todoService.updateTodoById(todoId, tempTodo);
-            }
-        }
-        return "redirect:/todo/list";
-    }
     @GetMapping("")
     public String todoList() {
         return "/todo/main";

@@ -11,7 +11,7 @@
 <div style="text-align:center">
     <h1>TODO List</h1>
 </div>
-<form action="/todo/check-done" method="POST" style="text-align: center">
+<form action="/todo/check-done" method="GET" style="text-align: center">
     <div style="display: inline-block; width: 400px; text-align: left">
         <ul class="list-group" th:each="todo: ${todoList}">
             <div>
